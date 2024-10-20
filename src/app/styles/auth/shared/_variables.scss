@@ -1,0 +1,20 @@
+/* src/app/styles/auth/shared/_variables.scss */
+
+/* Paleta de colores */
+$color-primary-dark: #001F3F;    // Azul muy oscuro
+$color-primary: #3A6D8C;         // Azul medio
+$color-primary-light: #6A9AB0;   // Azul claro
+$color-bg-light: #EAD8B1;        // Beige claro
+$color-bg-secondary: #E4C59E;    // Beige secundario
+$color-accent: #AF8260;          // Marrón claro
+$color-error: #803D3B;           // Rojo oscuro/Marrón
+$color-text-dark: #322C2B;       // Gris oscuro
+$color-text-light: #FFFFFF;      // Blanco
+$color-overlay: rgba(0, 0, 0, 0.6); // Superposición oscura para mejorar la legibilidad
+
+/* Colores adicionales para mejor flexibilidad */
+$color-input-bg: rgba(52, 44, 43, 0.8); // Fondo de ion-input (gris oscuro semi-transparente)
+$color-button-hover: darken($color-primary, 10%);
+$color-button-active: darken($color-primary, 20%);
+$color-social-button-hover: lighten($color-bg-secondary, 10%);
+$color-social-button-active: darken($color-bg-secondary, 10%);

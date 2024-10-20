@@ -1,0 +1,64 @@
+<!-- src\app\pages\login\login.page.html -->
+<ion-content>
+  <div class="img-login">
+    <form (submit)="onLogin()" aria-label="Formulario de Inicio de Sesión">
+      <div class="ion-text-center">
+        <h1>Iniciar Sesión</h1>
+      </div>
+      <ion-item>
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          autocomplete="email"
+          aria-required="true"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          autocomplete="current-password"
+          aria-required="true"
+        ></ion-input>
+      </ion-item>
+      <div
+        *ngIf="errorMessage"
+        class="error-message"
+        aria-live="assertive"
+        role="alert"
+      >
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        {{ errorMessage }}
+      </div>
+      <ion-button expand="full" type="submit" [disabled]="loading">
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+        <span *ngIf="!loading">Iniciar Sesión</span>
+      </ion-button>
+      <div class="ion-text-center">
+        <ion-button
+          fill="clear"
+          routerLink="/register"
+          aria-label="Registro de nueva cuenta"
+        >
+          ¿No tienes una cuenta? Crea una cuenta
+        </ion-button>
+      </div>
+      <!-- <div class="social-login">
+        <ion-button expand="full" color="light">
+          <ion-icon name="logo-google"></ion-icon> Iniciar con Google
+        </ion-button>
+        <ion-button expand="full" color="light">
+          <ion-icon name="logo-facebook"></ion-icon> Iniciar con Facebook
+        </ion-button>
+      </div> -->
+    </form>
+  </div>
+</ion-content>

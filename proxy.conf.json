@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "http://localhost:8586/proyectos/legendary_quest/src/",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

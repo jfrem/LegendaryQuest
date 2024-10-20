@@ -1,0 +1,16 @@
+#gameContainer {
+    position: relative;
+  }
+  
+  .game-overlay {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  

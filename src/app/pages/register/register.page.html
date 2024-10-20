@@ -1,0 +1,116 @@
+<!-- src/app/pages/register/register.page.html -->
+<ion-content>
+  <div class="img-login">
+    <form (ngSubmit)="onRegister(registerForm)" #registerForm="ngForm" aria-label="Formulario de Registro">
+      <div class="ion-text-center">
+        <h1>Registro</h1>
+      </div>
+
+      <ion-item>
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Nombre de Usuario</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          required
+          minlength="3"
+          autocomplete="username"
+          aria-required="true"
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.submitted && !username">
+        <p class="ion-padding-start">El nombre de usuario es requerido.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          email
+          autocomplete="email"
+          aria-required="true"
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.submitted && !email">
+        <p class="ion-padding-start">El correo electrónico es requerido.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          minlength="6"
+          autocomplete="new-password"
+          aria-required="true"
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.submitted && !password">
+        <p class="ion-padding-start">La contraseña es requerida.</p>
+      </ion-text>
+
+      <ion-item>
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Confirmar Contraseña</ion-label>
+        <ion-input
+          type="password"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          minlength="6"
+          autocomplete="new-password"
+          aria-required="true"
+        ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="registerForm.submitted && !confirmPassword">
+        <p class="ion-padding-start">La confirmación de contraseña es requerida.</p>
+      </ion-text>
+
+      <!-- Mensaje de error -->
+      <div
+        *ngIf="errorMessage"
+        class="error-message"
+        aria-live="assertive"
+        role="alert"
+      >
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        {{ errorMessage }}
+      </div>
+
+      <ion-button expand="full" type="submit" [disabled]="loading">
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+        <span *ngIf="!loading">Registrar</span>
+      </ion-button>
+
+      <div class="ion-text-center">
+        <ion-button
+          fill="clear"
+          routerLink="/login"
+          aria-label="Iniciar sesión con una cuenta existente"
+        >
+          ¿Ya tienes una cuenta? Inicia Sesión
+        </ion-button>
+      </div>
+
+      <!-- Botones de registro social (opcional) -->
+      <!--
+      <div class="social-login">
+        <ion-button expand="full" color="light">
+          <ion-icon name="logo-google"></ion-icon> Registrar con Google
+        </ion-button>
+        <ion-button expand="full" color="light">
+          <ion-icon name="logo-facebook"></ion-icon> Registrar con Facebook
+        </ion-button>
+      </div>
+      -->
+    </form>
+  </div>
+</ion-content>
