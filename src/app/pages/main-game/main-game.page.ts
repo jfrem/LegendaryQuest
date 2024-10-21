@@ -1,4 +1,4 @@
-//app/main-game/main-game.page.ts
+// src/app/pages/main-game/main-game.page.ts
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { NavController, ToastController } from '@ionic/angular';
@@ -27,19 +27,25 @@ export class MainGamePage implements OnInit {
     await toast.present();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.authService.isAuthenticated()) {
+      this.navCtrl.navigateRoot('/login');
+    }
+  }
 
   startGame() {
     console.log('Juego iniciado');
-    // Aquí puedes agregar la lógica para iniciar el juego.
+    // Navegar a la página del juego
+    // this.navCtrl.navigateForward('/game');
   }
 
-  showInstructions() {
+  showOptions() {
     console.log('Mostrar instrucciones');
-    // Aquí puedes agregar la lógica para mostrar instrucciones.
+    // Implementa la lógica para mostrar un modal con opciones
   }
 
   logout() {
+    this.loading = true;
     const userId = this.authService.getUserId();
 
     this.authService.logout(userId).subscribe({

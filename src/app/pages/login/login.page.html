@@ -1,7 +1,7 @@
-<!-- src\app\pages\login\login.page.html -->
+<!-- src/app/pages/login/login.page.html -->
 <ion-content>
   <div class="img-login">
-    <form (submit)="onLogin()" aria-label="Formulario de Inicio de Sesión">
+    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" aria-label="Formulario de Inicio de Sesión">
       <div class="ion-text-center">
         <h1>Iniciar Sesión</h1>
       </div>
@@ -15,6 +15,7 @@
           required
           autocomplete="email"
           aria-required="true"
+          aria-describedby="emailHelp"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -27,18 +28,10 @@
           required
           autocomplete="current-password"
           aria-required="true"
+          aria-describedby="passwordHelp"
         ></ion-input>
       </ion-item>
-      <div
-        *ngIf="errorMessage"
-        class="error-message"
-        aria-live="assertive"
-        role="alert"
-      >
-        <ion-icon name="alert-circle-outline"></ion-icon>
-        {{ errorMessage }}
-      </div>
-      <ion-button expand="full" type="submit" [disabled]="loading">
+      <ion-button expand="full" type="submit" [disabled]="loading || !loginForm.valid">
         <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
         <span *ngIf="!loading">Iniciar Sesión</span>
       </ion-button>
@@ -51,14 +44,16 @@
           ¿No tienes una cuenta? Crea una cuenta
         </ion-button>
       </div>
-      <!-- <div class="social-login">
+      <!-- 
+      <div class="social-login">
         <ion-button expand="full" color="light">
           <ion-icon name="logo-google"></ion-icon> Iniciar con Google
         </ion-button>
         <ion-button expand="full" color="light">
           <ion-icon name="logo-facebook"></ion-icon> Iniciar con Facebook
         </ion-button>
-      </div> -->
+      </div>
+      -->
     </form>
   </div>
 </ion-content>

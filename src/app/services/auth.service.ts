@@ -1,154 +1,98 @@
-// src\app\services\auth.service.ts
-// Importaciones necesarias desde Angular y RxJS
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-/**
- * Interfaz que representa la respuesta del servidor al realizar un login.
- */
+// Definición de la interfaz para la respuesta de login
 interface LoginResponse {
-  message: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
+  message: string;  // Mensaje de respuesta
+  user: {          // Información del usuario
+    id: string;    // ID del usuario
+    username: string; // Nombre de usuario
+    email: string; // Correo electrónico del usuario
   };
 }
 
-/**
- * Servicio de autenticación que maneja el registro, inicio de sesión y cierre de sesión de usuarios.
- */
+// Decorador que indica que esta clase es un servicio inyectable
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  /**
-   * URL base de la API.
-   */
+  // URL de la API a la que se realizarán las solicitudes
   private apiUrl = 'http://localhost:8586/proyectos/legendary_quest/public/api';
 
-  /**
-   * Constructor que inyecta el cliente HTTP.
-   * @param http - Cliente HTTP de Angular para realizar solicitudes.
-   */
+  // Inyección del HttpClient para realizar solicitudes HTTP
   constructor(private http: HttpClient) {}
 
-  /**
-   * Maneja los errores de las solicitudes HTTP.
-   * @param error - Objeto de error recibido.
-   * @returns Observable que emite un error con el mensaje correspondiente.
-   */
+  // Método para manejar errores de las solicitudes HTTP
   private handleError(error: any): Observable<never> {
     let errorMsg = 'Ocurrió un error al procesar la solicitud.';
 
+    // Manejo de errores basado en la respuesta del servidor
     if (error.error && error.error.message) {
-      // Si el error tiene un mensaje específico, lo utiliza
       errorMsg = error.error.message;
     } else if (error.status === 0) {
-      // Si no hay conexión con el servidor
-      errorMsg =
-        'No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.';
+      errorMsg = 'No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.';
     }
 
-    // Imprime el error en la consola para depuración
     console.error('Ocurrió un error:', errorMsg);
-    // Retorna un observable que emite un error
-    return throwError(() => new Error(errorMsg));
+    return throwError(() => new Error(errorMsg)); // Lanzar el error para ser manejado por el suscriptor
   }
 
-  /**
-   * Registra un nuevo usuario.
-   * @param username - Nombre de usuario.
-   * @param email - Correo electrónico del usuario.
-   * @param password - Contraseña.
-   * @param passwordConfirmation - Confirmación de la contraseña.
-   * @returns Observable con la respuesta de la API.
-   */
+  // Método para registrar un nuevo usuario
   register(username: string, email: string, password: string): Observable<any> {
-    // Define las cabeceras HTTP
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' }); // Establece los headers para la solicitud
+    const body = { username, email, password }; // Cuerpo de la solicitud con los datos del usuario
 
-    // Crea el cuerpo de la solicitud con los datos de registro
-    const body = {
-      username,
-      email,
-      password,
-    };
+    console.log('😜 Datos de registro:', body); // Log de los datos de registro
 
-    // Muestra los datos de registro en la consola (útil para depuración)
-    console.log('😜 Datos de registro:', body);
-
-    // Realiza la solicitud POST a la API para registrar el usuario
-    return this.http.post(`${this.apiUrl}/register`, body, { headers }).pipe(
-      // Maneja los posibles errores de la solicitud
-      catchError(this.handleError)
-    );
+    return this.http
+      .post(`${this.apiUrl}/register`, body, { headers }) // Realiza la solicitud POST para el registro
+      .pipe(catchError(this.handleError)); // Maneja errores en la solicitud
   }
 
-  /**
-   * Inicia sesión un usuario.
-   * @param email - Correo electrónico del usuario.
-   * @param password - Contraseña del usuario.
-   * @returns Observable con la respuesta de login.
-   */
+  // Método para iniciar sesión
   login(email: string, password: string): Observable<LoginResponse> {
-    // Define las cabeceras HTTP
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    // Crea el cuerpo de la solicitud con las credenciales de login
-    const body = { email, password };
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' }); // Establece los headers
+    const body = { email, password }; // Cuerpo de la solicitud con las credenciales
 
-    // Muestra la solicitud de login en la consola
-    console.log('Enviando solicitud de login:', body);
+    console.log('Enviando solicitud de login:', body); // Log de la solicitud de login
 
-    // Realiza la solicitud POST a la API para iniciar sesión
     return this.http
-      .post<LoginResponse>(`${this.apiUrl}/login`, body, { headers })
+      .post<LoginResponse>(`${this.apiUrl}/login`, body, { headers }) // Realiza la solicitud POST para el login
       .pipe(
-        // Ejecuta acciones adicionales con la respuesta exitosa
-        tap((res) => {
-          console.log('Respuesta de login:', res);
-          // Almacena la información del usuario en el almacenamiento local del navegador
-          localStorage.setItem('user', JSON.stringify(res.user));
+        tap((res) => { // Toma la respuesta del login
+          console.log('Respuesta de login:', res); // Log de la respuesta
+          localStorage.setItem('user', JSON.stringify(res.user)); // Guarda la información del usuario en localStorage
         }),
-        // Maneja los posibles errores de la solicitud
-        catchError(this.handleError)
+        catchError(this.handleError) // Maneja errores en la solicitud
       );
   }
 
-  /**
-   * Cierra la sesión de un usuario.
-   * @param userId - ID del usuario que desea cerrar sesión.
-   * @returns Observable con la respuesta de la API.
-   */
+  // Método para cerrar sesión
   logout(userId: string): Observable<any> {
-    // Define las cabeceras HTTP
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    // Realiza la solicitud POST a la API para cerrar sesión
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' }); // Establece los headers
     return this.http
-      .post(`${this.apiUrl}/logout/${userId}`, {}, { headers })
+      .post(`${this.apiUrl}/logout/${userId}`, {}, { headers }) // Realiza la solicitud POST para cerrar sesión
       .pipe(
-        // Ejecuta acciones adicionales después de cerrar sesión
         tap(() => {
-          // Elimina la información del usuario del almacenamiento local
-          localStorage.removeItem('user');
+          localStorage.removeItem('user'); // Elimina la información del usuario de localStorage
         }),
-        // Maneja los posibles errores de la solicitud
-        catchError(this.handleError)
+        catchError(this.handleError) // Maneja errores en la solicitud
       );
   }
 
-  /**
-   * Obtiene el ID del usuario almacenado en el almacenamiento local.
-   * @returns ID del usuario o una cadena vacía si no está disponible.
-   */
+  // Método para obtener el ID del usuario almacenado en localStorage
   getUserId(): string {
-    // Recupera la información del usuario del almacenamiento local
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    // Retorna el ID del usuario o una cadena vacía si no existe
-    return user.id || '';
+    const user = JSON.parse(localStorage.getItem('user') || '{}'); // Obtiene y parsea el usuario desde localStorage
+    return user.id || ''; // Devuelve el ID del usuario o una cadena vacía si no existe
+  }
+
+  /**
+   * Verifica si el usuario está autenticado.
+   * @returns true si el usuario está autenticado, false en caso contrario.
+   */
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('user'); // Devuelve true si hay un usuario en localStorage, false de lo contrario
   }
 }

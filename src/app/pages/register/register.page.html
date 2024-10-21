@@ -1,7 +1,10 @@
-<!-- src/app/pages/register/register.page.html -->
 <ion-content>
   <div class="img-login">
-    <form (ngSubmit)="onRegister(registerForm)" #registerForm="ngForm" aria-label="Formulario de Registro">
+    <form
+      (ngSubmit)="onRegister(registerForm)"
+      #registerForm="ngForm"
+      aria-label="Formulario de Registro"
+    >
       <div class="ion-text-center">
         <h1>Registro</h1>
       </div>
@@ -19,9 +22,6 @@
           aria-required="true"
         ></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.submitted && !username">
-        <p class="ion-padding-start">El nombre de usuario es requerido.</p>
-      </ion-text>
 
       <ion-item>
         <ion-icon name="mail-outline" slot="start"></ion-icon>
@@ -36,9 +36,6 @@
           aria-required="true"
         ></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.submitted && !email">
-        <p class="ion-padding-start">El correo electrónico es requerido.</p>
-      </ion-text>
 
       <ion-item>
         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
@@ -53,9 +50,6 @@
           aria-required="true"
         ></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.submitted && !password">
-        <p class="ion-padding-start">La contraseña es requerida.</p>
-      </ion-text>
 
       <ion-item>
         <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
@@ -70,11 +64,7 @@
           aria-required="true"
         ></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.submitted && !confirmPassword">
-        <p class="ion-padding-start">La confirmación de contraseña es requerida.</p>
-      </ion-text>
 
-      <!-- Mensaje de error -->
       <div
         *ngIf="errorMessage"
         class="error-message"
@@ -99,18 +89,6 @@
           ¿Ya tienes una cuenta? Inicia Sesión
         </ion-button>
       </div>
-
-      <!-- Botones de registro social (opcional) -->
-      <!--
-      <div class="social-login">
-        <ion-button expand="full" color="light">
-          <ion-icon name="logo-google"></ion-icon> Registrar con Google
-        </ion-button>
-        <ion-button expand="full" color="light">
-          <ion-icon name="logo-facebook"></ion-icon> Registrar con Facebook
-        </ion-button>
-      </div>
-      -->
     </form>
   </div>
 </ion-content>

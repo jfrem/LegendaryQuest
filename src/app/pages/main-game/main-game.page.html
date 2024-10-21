@@ -1,12 +1,18 @@
 <!-- app/main-game/main-game.page.html -->
-<ion-content>
-  <div id="gameContainer" style="position: relative; height: 100%; display: flex; justify-content: center; align-items: center;">
-    <img src="assets/images/login.jpg" alt="Fondo del Juego" style="position: absolute; width: 100%; height: 100%; object-fit: cover;">
+<ion-content class="ion-no-padding">
+  <div class="img-login" id="gameContainer">
     <div class="game-overlay">
-      <h1>¡Bienvenido al Juego!</h1>
-      <ion-button expand="full" color="primary" (click)="startGame()">Iniciar Juego</ion-button>
-      <ion-button expand="full" color="secondary" (click)="showInstructions()">Opciones</ion-button>
-      <ion-button expand="full" color="danger" (click)="logout()">Salir</ion-button>
+      <div class="menu-buttons">
+        <ion-title class="game-title">
+          <a href="javascript:void(0)" class="menu-button" (click)="startGame()">Empezar</a>
+        </ion-title>
+        <ion-title class="game-title">
+          <a href="javascript:void(0)" class="menu-button" (click)="showOptions()">Opciones</a>
+        </ion-title>
+        <ion-title class="game-title">
+          <a href="javascript:void(0)" class="menu-button" (click)="logout()">Salir</a>
+        </ion-title>
+      </div>
     </div>
   </div>
 </ion-content>

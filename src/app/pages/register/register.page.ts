@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { NotificationService } from '../../services/notification.service';
 import { catchError, finalize, of } from 'rxjs';
 
 @Component({
@@ -11,65 +11,61 @@ import { catchError, finalize, of } from 'rxjs';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage {
-  username: string = '';
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  loading: boolean = false;
-  errorMessage: string = '';
+  username = '';
+  email = '';
+  password = '';
+  confirmPassword = '';
+  loading = false;
+  errorMessage = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastController: ToastController
+    private notificationService: NotificationService
   ) {}
 
   onRegister(form: NgForm) {
+    this.errorMessage = '';
+
+    if (!this.validateForm(form)) return;
+
+    this.loading = true;
+
+    this.authService.register(this.username, this.email, this.password).pipe(
+      catchError((error: any) => {
+        this.showError(error.message || 'Error al registrar la cuenta.');
+        return of(null);
+      }),
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe((result) => {
+      if (result) {
+        this.notificationService.presentToast(
+          'Registro exitoso. Por favor, inicia sesión.',
+          'success'
+        );
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  private validateForm(form: NgForm): boolean {
     if (!form.valid) {
-      this.setError('Por favor completa todos los campos requeridos.');
-      return;
+      this.showError('Por favor completa todos los campos requeridos.');
+      return false;
     }
 
     if (this.password !== this.confirmPassword) {
-      this.setError('Las contraseñas no coinciden.');
-      return;
+      this.showError('Las contraseñas no coinciden.');
+      return false;
     }
 
-    this.loading = true;
-    this.errorMessage = '';
-
-    this.authService
-      .register(this.username, this.email, this.password)
-      .pipe(
-        catchError((error: any) => {
-          this.setError(error.message || 'Error al registrar la cuenta.');
-          return of(null);
-        }),
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe((result) => {
-        if (result) {
-          this.presentToast('Registro exitoso. Por favor, inicia sesión.', 'success');
-          this.router.navigate(['/login']);
-        }
-      });
+    return true;
   }
 
-  private setError(message: string) {
+  private showError(message: string) {
     this.errorMessage = message;
-    this.presentToast(message, 'danger');
-  }
-
-  async presentToast(message: string, color: 'success' | 'danger' = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 3000,
-      position: 'top',
-      color: color,
-      buttons: [{ text: 'Cerrar', role: 'cancel' }],
-    });
-    toast.present();
+    this.notificationService.presentToast(message, 'danger');
   }
 }
