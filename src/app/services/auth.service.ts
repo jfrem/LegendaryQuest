@@ -1,3 +1,4 @@
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -5,9 +6,10 @@ import { catchError, tap } from 'rxjs/operators';
 
 // Definición de la interfaz para la respuesta de login
 interface LoginResponse {
-  message: string;  // Mensaje de respuesta
-  user: {          // Información del usuario
-    id: string;    // ID del usuario
+  message: string; // Mensaje de respuesta
+  user: {
+    // Información del usuario
+    id: string; // ID del usuario
     username: string; // Nombre de usuario
     email: string; // Correo electrónico del usuario
   };
@@ -32,7 +34,8 @@ export class AuthService {
     if (error.error && error.error.message) {
       errorMsg = error.error.message;
     } else if (error.status === 0) {
-      errorMsg = 'No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.';
+      errorMsg =
+        'No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.';
     }
 
     console.error('Ocurrió un error:', errorMsg);
@@ -61,7 +64,8 @@ export class AuthService {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, body, { headers }) // Realiza la solicitud POST para el login
       .pipe(
-        tap((res) => { // Toma la respuesta del login
+        tap((res) => {
+          // Toma la respuesta del login
           console.log('Respuesta de login:', res); // Log de la respuesta
           localStorage.setItem('user', JSON.stringify(res.user)); // Guarda la información del usuario en localStorage
         }),
