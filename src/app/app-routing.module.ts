@@ -23,6 +23,14 @@ const routes: Routes = [
         (m) => m.MainGamePageModule
       ),
   },
+  {
+    path: 'game',
+    loadChildren: () => import('./game/game.module').then( m => m.GamePageModule)
+  },
+  {
+    path: 'options',
+    loadChildren: () => import('./options/options.module').then( m => m.OptionsPageModule)
+  },
   // Agregar otras rutas según sea necesario
 ];
 

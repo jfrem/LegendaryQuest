@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { NavController, ToastController } from '@ionic/angular';
+import { Game } from '../../models/game.interface';
+import { GameOptions } from '../../models/options.interface';
 
 @Component({
   selector: 'app-main-game',
@@ -10,6 +12,12 @@ import { NavController, ToastController } from '@ionic/angular';
 })
 export class MainGamePage implements OnInit {
   loading: boolean = false;
+  currentGame: Game = { id: '', name: '' };
+  gameOptions: GameOptions = {
+    difficulty: 'medium',
+    volume: 50,
+    showHints: true,
+  };
 
   constructor(
     private authService: AuthService,
@@ -36,12 +44,13 @@ export class MainGamePage implements OnInit {
   startGame() {
     console.log('Juego iniciado');
     // Navegar a la página del juego
-    // this.navCtrl.navigateForward('/game');
+    this.navCtrl.navigateForward('/game');
   }
 
   showOptions() {
     console.log('Mostrar instrucciones');
-    // Implementa la lógica para mostrar un modal con opciones
+    // Navegar a la página de opciones
+    this.navCtrl.navigateForward('/options');
   }
 
   logout() {

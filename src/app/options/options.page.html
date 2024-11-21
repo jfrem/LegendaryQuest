@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Opciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="saveOptions()">
+    <ion-item>
+      <ion-label>Dificultad</ion-label>
+      <ion-select [(ngModel)]="gameOptions.difficulty" name="difficulty">
+        <ion-select-option value="easy">Fácil</ion-select-option>
+        <ion-select-option value="medium">Medio</ion-select-option>
+        <ion-select-option value="hard">Difícil</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Volumen</ion-label>
+      <ion-range [(ngModel)]="gameOptions.volume" min="0" max="100" name="volume"></ion-range>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Mostrar pistas</ion-label>
+      <ion-toggle [(ngModel)]="gameOptions.showHints" name="showHints"></ion-toggle>
+    </ion-item>
+
+    <ion-button expand="full" type="submit">Guardar Opciones</ion-button>
+  </form>
+</ion-content>
